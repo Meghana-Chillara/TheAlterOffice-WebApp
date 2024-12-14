@@ -2,22 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { Camera, Edit, MapPin, Briefcase, Link, Calendar } from 'lucide-react';
-import { initializeApp } from 'firebase/app';
 
-// Firebase Configuration (Replace with your own)
-const firebaseConfig = {
-  apiKey: "AIzaSyAUWuYJ2-vqNXwFh1l8amiV5JuqjCT1SCE",
-  authDomain: "web-application-b9e99.firebaseapp.com",
-  projectId: "web-application-b9e99",
-  storageBucket: "web-application-b9e99.firebasestorage.app",
-  messagingSenderId: "830504262562",
-  appId: "1:830504262562:web:1deaef38ba5ad3c5beb0fb",
-  measurementId: "G-G965VVXK8D"
-};
-
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const Profile: React.FC = () => {
   const auth = getAuth();
   const firestore = getFirestore();
@@ -67,36 +52,6 @@ const Profile: React.FC = () => {
       }
     };
 
-    fetchUserDetails();
-  }, [user, firestore]);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (user) {
-        console.log('Current User:', user);
-        console.log('User UID:', user.uid);
-  
-        try {
-          const userDocRef = doc(firestore, 'users', user.uid);
-          const userDoc = await getDoc(userDocRef);
-          
-          console.log('User Document Exists:', userDoc.exists());
-          
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            console.log('User Data from Firestore:', userData);
-            
-            // Your existing setState calls
-            setBio(userData.bio || '');
-            setLocation(userData.location || '');
-            // ... other setters
-          }
-        } catch (error) {
-          console.error("Error fetching user details:", error);
-        }
-      }
-    };
-  
     fetchUserDetails();
   }, [user, firestore]);
 
@@ -161,7 +116,6 @@ const Profile: React.FC = () => {
     }
   };
 
-  // Render component
   return (
     <div className="max-w-2xl mx-auto py-6 px-4">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -171,7 +125,6 @@ const Profile: React.FC = () => {
           <div className="relative w-32 h-32 mx-auto mt-6 mb-4">
             <img
               src={user?.photoURL || '/default-avatar.png'}
-              
               className="w-full h-full rounded-full object-cover border-4 border-gray-200"
             />
             {/* Profile Picture Upload */}
